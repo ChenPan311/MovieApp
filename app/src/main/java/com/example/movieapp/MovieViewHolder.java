@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView title, duration, rating;
     ImageView image;
-    RatingBar ratingBar;
     private OnMovieListener movieListener;
 
     public MovieViewHolder(@NonNull View itemView, OnMovieListener movieListener) {
@@ -20,7 +19,6 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
         duration = itemView.findViewById(R.id.movie_duration);
         rating = itemView.findViewById(R.id.movie_rating_tv);
         image = itemView.findViewById(R.id.movie_image);
-        ratingBar = itemView.findViewById(R.id.movie_rating_rb);
         this.movieListener = movieListener;
         itemView.setOnClickListener(this);
     }

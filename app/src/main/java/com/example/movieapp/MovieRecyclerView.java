@@ -41,7 +41,6 @@ public class MovieRecyclerView extends RecyclerView.Adapter<MovieViewHolder> {
         holder.title.setText(movie.getTitle());
         holder.duration.setText(movie.getRelease_date());
         holder.rating.setText(movie.getVote_average());
-        holder.ratingBar.setRating(Float.parseFloat(movie.getVote_average()));
         Glide.with(holder.itemView.getContext())
                 .load("https://image.tmdb.org/t/p/w500/"+movie.getPoster_path())
                 .transform(new CenterCrop(),new RoundedCorners(15))

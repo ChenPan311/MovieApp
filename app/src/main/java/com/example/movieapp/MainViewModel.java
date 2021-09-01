@@ -59,6 +59,12 @@ public class MainViewModel extends ViewModel {
         responseCall.enqueue(callback);
     }
 
+    public void getNowPlaying(){
+        MovieApi movieApi = Service.getMovieApi();
+        Call<MovieSearchResponse> responseCall = movieApi.getNowPlaying(Credentials.API_KEY,"1");
+        responseCall.enqueue(callback);
+    }
+
     public void getRetrofitResponse(String query) {
         MovieApi movieApi = Service.getMovieApi();
         Call<MovieSearchResponse> responseCall = movieApi.searchMovie(

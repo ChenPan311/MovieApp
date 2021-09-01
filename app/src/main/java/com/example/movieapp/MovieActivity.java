@@ -1,6 +1,7 @@
 package com.example.movieapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -37,4 +38,5 @@ public class MovieActivity extends AppCompatActivity {
                     + movieModel.getPoster_path()).into(movieImage);
         }
     }
+
 }
