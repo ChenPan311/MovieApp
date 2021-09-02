@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityOptionsCompat;
@@ -20,34 +21,47 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.movieapp.Fragments.GenresFragment;
 import com.example.movieapp.Fragments.MainFragment;
 import com.example.movieapp.Models.MovieModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 import java.util.List;
 
 public class MovieListActivity extends AppCompatActivity {
-    private MainViewModel mainViewModel;
+    private MainFragment mainFragment;
+    private GenresFragment genresFragment;
+    private BottomNavigationView bottomNavigationView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainViewModel= new ViewModelProvider(this).get(MainViewModel.class);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
-                .addToBackStack("Main")
-                .commit();
+        mainFragment = MainFragment.newInstance();
+        genresFragment = GenresFragment.newInstance();
+        bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch(item.getItemId()){
+                    case R.id.home:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, mainFragment,"main").commit();
+                        return true;
+                    case R.id.genres:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, genresFragment,"genres").commit();
+                        return true;
+                }
+                return false;
+            }
+        });
 
-    }
-    @Override
-    public void onBackPressed() {
-        if (getFragmentManager().getBackStackEntryCount() > 0) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
+        bottomNavigationView.setSelectedItemId(R.id.home);
     }
 }
