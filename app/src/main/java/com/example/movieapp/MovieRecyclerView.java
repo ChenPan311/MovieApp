@@ -28,6 +28,10 @@ public class MovieRecyclerView extends RecyclerView.Adapter<MovieViewHolder> {
         this.movieListener = movieListener;
     }
 
+    public void addToMovieModelList(List<MovieModel> movieModelList) {
+        this.movieModelList.addAll(movieModelList);
+    }
+
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

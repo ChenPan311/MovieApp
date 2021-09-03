@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -33,6 +34,7 @@ public class PageFragment extends Fragment implements OnMovieListener {
     private RecyclerView recyclerView;
     private MovieRecyclerView movieRecyclerView;
     private MainViewModel viewModel;
+    private int page = 1;
 
     public PageFragment() {
         // Required empty public constructor
@@ -64,11 +66,28 @@ public class PageFragment extends Fragment implements OnMovieListener {
         viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
-                GridLayoutManager layoutManager
-                        = new GridLayoutManager(requireContext(),2);
-                movieRecyclerView = new MovieRecyclerView(movieModels, PageFragment.this);
-                recyclerView.setAdapter(movieRecyclerView);
-                recyclerView.setLayoutManager(layoutManager);
+                if(page == 1) {
+                    GridLayoutManager layoutManager
+                            = new GridLayoutManager(requireContext(), 2);
+                    movieRecyclerView = new MovieRecyclerView(movieModels, PageFragment.this);
+                    recyclerView.setAdapter(movieRecyclerView);
+                    recyclerView.setLayoutManager(layoutManager);
+                }else{
+                    int lastSize = movieRecyclerView.getItemCount();
+                    movieRecyclerView.addToMovieModelList(movieModels);
+                    movieRecyclerView.notifyItemRangeInserted(lastSize,movieRecyclerView.getItemCount());
+                }
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if(!recyclerView.canScrollVertically(1)){
+                    page++;
+                    viewModel.getMoreMoviesByGenre(String.valueOf(mGenre.getId()),String.valueOf(page));
+                }
             }
         });
 

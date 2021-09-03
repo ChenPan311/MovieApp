@@ -31,7 +31,6 @@ public class MainViewModel extends ViewModel {
         public void onResponse(Call<MovieSearchResponse> call, Response<MovieSearchResponse> response) {
             if (response.code() == 200) {
                 List<MovieModel> movies = new ArrayList<>(response.body().getMovieList());
-                Collections.sort(movies, new Comparator.RatingComparator(-1));
                 moviesList.setValue(movies);
             } else {
                 try {
@@ -48,15 +47,15 @@ public class MainViewModel extends ViewModel {
         }
     };
 
-    public LiveData<List<MovieModel>> getMovies(){
-        if (moviesList == null){
+    public LiveData<List<MovieModel>> getMovies() {
+        if (moviesList == null) {
             moviesList = new MutableLiveData<>();
         }
         return moviesList;
     }
 
-    public LiveData<List<GenreModel>> getGenres(){
-        if (genresList == null){
+    public LiveData<List<GenreModel>> getGenres() {
+        if (genresList == null) {
             genresList = new MutableLiveData<>();
         }
         return genresList;
@@ -69,15 +68,21 @@ public class MainViewModel extends ViewModel {
         responseCall.enqueue(callback);
     }
 
-    public void getNowPlaying(){
+    public void getNowPlaying() {
         MovieApi movieApi = Service.getMovieApi();
-        Call<MovieSearchResponse> responseCall = movieApi.getNowPlaying(Credentials.API_KEY,"1");
+        Call<MovieSearchResponse> responseCall = movieApi.getNowPlaying(Credentials.API_KEY, "1");
         responseCall.enqueue(callback);
     }
 
-    public void getMoviesByGenre(String genreId){
+    public void getMoviesByGenre(String genreId) {
         MovieApi movieApi = Service.getMovieApi();
-        Call<MovieSearchResponse> responseCall = movieApi.getMoviesByGenre(Credentials.API_KEY,"1",genreId);
+        Call<MovieSearchResponse> responseCall = movieApi.getMoviesByGenre(Credentials.API_KEY, "1", genreId);
+        responseCall.enqueue(callback);
+    }
+
+    public void getMoreMoviesByGenre(String genreId, String page) {
+        MovieApi movieApi = Service.getMovieApi();
+        Call<MovieSearchResponse> responseCall = movieApi.getMoviesByGenre(Credentials.API_KEY, page, genreId);
         responseCall.enqueue(callback);
     }
 
@@ -92,7 +97,7 @@ public class MainViewModel extends ViewModel {
         responseCall.enqueue(callback);
     }
 
-    public void getGenresList(){
+    public void getGenresList() {
         MovieApi movieApi = Service.getMovieApi();
         Call<GenreResponse> responseCall = movieApi.getGenres(Credentials.API_KEY);
         responseCall.enqueue(new Callback<GenreResponse>() {
