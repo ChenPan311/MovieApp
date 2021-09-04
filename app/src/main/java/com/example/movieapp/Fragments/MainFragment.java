@@ -39,7 +39,7 @@ public class MainFragment extends Fragment implements OnMovieListener {
     private MainViewModel mainViewModel;
     private RecyclerView recyclerView;
     private MovieRecyclerView movieRecyclerView;
-    private TextView resultsTv;
+    private TextView resultsTv, nowPlayingTv;
     private ProgressBar progressBar;
 
 
@@ -69,11 +69,12 @@ public class MainFragment extends Fragment implements OnMovieListener {
         recyclerView = view.findViewById(R.id.recyclerView);
         resultsTv = view.findViewById(R.id.results_tv);
         progressBar = view.findViewById(R.id.progressBar);
+        nowPlayingTv = view.findViewById(R.id.now_playing_tv);
 
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
-        mainViewModel= new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
@@ -99,11 +100,6 @@ public class MainFragment extends Fragment implements OnMovieListener {
 
     @Override
     public void onMovieClick(int position, ImageView img) {
-//        getActivity().getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.container, MovieFragment.newInstance(movieRecyclerView.getSelectedMovie(position)))
-//                .addToBackStack("MovieFrag")
-//                .commit();
         Intent intent = new Intent(getContext(), MovieActivity.class);
         intent.putExtra("movie", movieRecyclerView.getSelectedMovie(position));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -117,7 +113,7 @@ public class MainFragment extends Fragment implements OnMovieListener {
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        getActivity().getMenuInflater().inflate(R.menu.menu,menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) menuItem.getActionView();
         searchView.setQueryHint("Enter Movie Name");
@@ -129,10 +125,13 @@ public class MainFragment extends Fragment implements OnMovieListener {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (s.equals(""))
+                if (s.equals("")) {
+                    nowPlayingTv.setText("Now Playing");
                     mainViewModel.getNowPlaying();
-                else
+                } else {
+                    nowPlayingTv.setText("Search Results");
                     mainViewModel.getRetrofitResponse(s);
+                }
                 return false;
             }
         });

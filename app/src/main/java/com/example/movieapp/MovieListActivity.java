@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -50,11 +51,13 @@ public class MovieListActivity extends AppCompatActivity {
                     case R.id.home:
                         getSupportFragmentManager()
                                 .beginTransaction()
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .replace(R.id.container, mainFragment,"main").commit();
                         return true;
                     case R.id.genres:
                         getSupportFragmentManager()
                                 .beginTransaction()
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                                 .replace(R.id.container, genresFragment,"genres").commit();
                         return true;
                 }

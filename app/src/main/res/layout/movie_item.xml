@@ -7,47 +7,39 @@
     android:layout_margin="10dp"
     android:background="@drawable/card_background"
     android:elevation="10dp"
-    android:padding="5dp"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/movie_image"
         android:layout_width="200dp"
         android:layout_height="270dp"
-        android:elevation="10dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
-        android:transitionName="imageAnim"
-        android:contentDescription="MovieImage" />
+        android:transitionName="imageAnim" />
+
+    <View
+        android:layout_width="200dp"
+        android:layout_height="270dp"
+        android:background="@drawable/gradient_black_white" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_alignEnd="@id/movie_image"
-        android:layout_alignStart="@id/movie_image"
         android:layout_height="wrap_content"
-        android:layout_below="@id/movie_image"
+        android:layout_alignStart="@id/movie_image"
+        android:layout_alignEnd="@id/movie_image"
+        android:layout_alignBottom="@id/movie_image"
         android:orientation="vertical"
         android:padding="10dp">
-
-        <TextView
-            android:id="@+id/movie_title"
-            android:layout_width="match_parent"
-            android:lines="2"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:text="Movie Ttile"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/movie_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:layout_marginTop="10dp"
             android:text="Date"
             android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="9.1"
                 android:textColor="@color/yellow"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -71,6 +63,17 @@
                 android:src="@drawable/ic_baseline_star_rate_24"
                 app:tint="@color/yellow" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="10dp"
+            android:lines="2"
+            android:text="Movie Ttile"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 
 

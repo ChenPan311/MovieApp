@@ -13,7 +13,8 @@
         android:theme="@style/Theme.MovieApp">
         <activity
             android:name=".MovieActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
         <activity
             android:name=".MovieListActivity"
             android:exported="true">

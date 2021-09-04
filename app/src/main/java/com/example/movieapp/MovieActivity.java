@@ -5,6 +5,9 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -16,6 +19,7 @@ public class MovieActivity extends AppCompatActivity {
     private ImageView movieImage;
     private TextView movieTitle, movieRating, movieOverview;
     private RatingBar movieRatingbar;
+    private ImageButton backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class MovieActivity extends AppCompatActivity {
         movieRating = findViewById(R.id.movie_rating_tv);
         movieRatingbar = findViewById(R.id.movie_rating_rb);
         movieTitle = findViewById(R.id.movie_title);
+        backBtn = findViewById(R.id.back_btn);
 
         if (getIntent().hasExtra("movie")) {
             MovieModel movieModel = getIntent().getParcelableExtra("movie");
@@ -37,6 +42,13 @@ public class MovieActivity extends AppCompatActivity {
             Glide.with(MovieActivity.this).load("https://image.tmdb.org/t/p/w500/"
                     + movieModel.getPoster_path()).into(movieImage);
         }
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
     }
 
 }
