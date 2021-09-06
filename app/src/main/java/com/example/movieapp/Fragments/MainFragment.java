@@ -32,6 +32,7 @@ import com.example.movieapp.MovieListActivity;
 import com.example.movieapp.MovieRecyclerView;
 import com.example.movieapp.OnMovieListener;
 import com.example.movieapp.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class MainFragment extends Fragment implements OnMovieListener {
     private RecyclerView recyclerView;
     private MovieRecyclerView movieRecyclerView;
     private TextView resultsTv, nowPlayingTv;
-    private ProgressBar progressBar;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
 
     public MainFragment() {
@@ -68,9 +69,10 @@ public class MainFragment extends Fragment implements OnMovieListener {
 
         recyclerView = view.findViewById(R.id.recyclerView);
         resultsTv = view.findViewById(R.id.results_tv);
-        progressBar = view.findViewById(R.id.progressBar);
         nowPlayingTv = view.findViewById(R.id.now_playing_tv);
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_layout);
 
+        shimmerFrameLayout.startShimmer();
         SnapHelper snapHelper = new LinearSnapHelper();
         snapHelper.attachToRecyclerView(recyclerView);
 
@@ -90,7 +92,9 @@ public class MainFragment extends Fragment implements OnMovieListener {
                 movieRecyclerView = new MovieRecyclerView(movieModels, MainFragment.this);
                 recyclerView.setAdapter(movieRecyclerView);
                 recyclerView.setLayoutManager(layoutManager);
-                progressBar.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             }
         });
 
