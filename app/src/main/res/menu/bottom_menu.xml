@@ -8,5 +8,9 @@
         android:id="@+id/genres"
         android:icon="@drawable/ic_baseline_movie_filter_24"
         android:title="Genres" />
+    <item
+        android:id="@+id/my_movies"
+        android:icon="@drawable/ic_heart_svgrepo_com"
+        android:title="My Movies" />
 
 </menu>

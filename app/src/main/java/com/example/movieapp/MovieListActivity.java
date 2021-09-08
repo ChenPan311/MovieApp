@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.Fragments.GenresFragment;
 import com.example.movieapp.Fragments.MainFragment;
+import com.example.movieapp.Fragments.MyMoviesFragment;
 import com.example.movieapp.Models.MovieModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -33,6 +34,7 @@ import java.util.List;
 public class MovieListActivity extends AppCompatActivity {
     private MainFragment mainFragment;
     private GenresFragment genresFragment;
+    private MyMoviesFragment myMoviesFragment;
     private BottomNavigationView bottomNavigationView;
 
 
@@ -43,22 +45,30 @@ public class MovieListActivity extends AppCompatActivity {
 
         mainFragment = MainFragment.newInstance();
         genresFragment = GenresFragment.newInstance();
+        myMoviesFragment = MyMoviesFragment.newInstance();
+
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.home:
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                .replace(R.id.container, mainFragment,"main").commit();
+                                .replace(R.id.container, mainFragment, "main").commit();
                         return true;
                     case R.id.genres:
                         getSupportFragmentManager()
                                 .beginTransaction()
                                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                                .replace(R.id.container, genresFragment,"genres").commit();
+                                .replace(R.id.container, genresFragment, "genres").commit();
+                        return true;
+                    case R.id.my_movies:
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                                .replace(R.id.container, myMoviesFragment, "my_movies").commit();
                         return true;
                 }
                 return false;

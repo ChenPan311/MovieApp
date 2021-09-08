@@ -3,13 +3,19 @@ package com.example.movieapp.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "movies")
 public class MovieModel implements Parcelable {
     private String title;
     private String poster_path;
     private String backdrop_path;
     private String release_date;
+    @PrimaryKey
     private int id;
     private String overview;
     private String vote_average;
@@ -24,6 +30,7 @@ public class MovieModel implements Parcelable {
         this.vote_average = vote_average;
     }
 
+    @Ignore
     protected MovieModel(Parcel in) {
         title = in.readString();
         poster_path = in.readString();
@@ -34,6 +41,7 @@ public class MovieModel implements Parcelable {
         vote_average = in.readString();
     }
 
+    @Ignore
     public static final Creator<MovieModel> CREATOR = new Creator<MovieModel>() {
         @Override
         public MovieModel createFromParcel(Parcel in) {

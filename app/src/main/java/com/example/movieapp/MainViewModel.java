@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.movieapp.Database.MoviesDatabase;
 import com.example.movieapp.Models.GenreModel;
 import com.example.movieapp.Models.MovieModel;
 import com.example.movieapp.Request.Service;
@@ -24,6 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainViewModel extends ViewModel {
+    private MoviesDatabase moviesDB;
     private MutableLiveData<List<MovieModel>> moviesList;
     private MutableLiveData<List<GenreModel>> genresList;
     private final Callback<MovieSearchResponse> callback = new Callback<MovieSearchResponse>() {
@@ -46,6 +48,14 @@ public class MainViewModel extends ViewModel {
 
         }
     };
+
+    public void setMoviesDB(MoviesDatabase moviesDB){
+        this.moviesDB = moviesDB;
+    }
+
+    public MoviesDatabase getMoviesDB() {
+        return moviesDB;
+    }
 
     public LiveData<List<MovieModel>> getMovies() {
         if (moviesList == null) {
