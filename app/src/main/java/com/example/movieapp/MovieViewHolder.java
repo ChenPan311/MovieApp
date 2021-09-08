@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     TextView title, duration, rating;
-    ImageView image;
+    ImageView image, like;
     private OnMovieListener movieListener;
 
     public MovieViewHolder(@NonNull View itemView, OnMovieListener movieListener) {
@@ -19,7 +19,14 @@ public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnC
         duration = itemView.findViewById(R.id.movie_duration);
         rating = itemView.findViewById(R.id.movie_rating_tv);
         image = itemView.findViewById(R.id.movie_image);
+        like = itemView.findViewById(R.id.like_btn);
         this.movieListener = movieListener;
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                movieListener.onLikeClick(getAdapterPosition());
+            }
+        });
         itemView.setOnClickListener(this);
     }
 

@@ -1,5 +1,6 @@
 package com.example.movieapp.Database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,7 +14,7 @@ import java.util.List;
 @Dao
 public interface MovieDao {
     @Query("Select * from movies")
-    List<MovieModel> getMoviesList();
+    LiveData<List<MovieModel>> getMoviesList();
     @Insert
     void addMovie(MovieModel movie);
     @Update

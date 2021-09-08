@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.example.movieapp.MovieActivity;
 import com.example.movieapp.MovieRecyclerView;
 import com.example.movieapp.OnMovieListener;
 import com.example.movieapp.R;
+import com.example.movieapp.Utils.AppExecutors;
 
 import java.util.List;
 
@@ -52,20 +54,19 @@ public class MyMoviesFragment extends Fragment implements OnMovieListener {
         View view = inflater.inflate(R.layout.fragment_my_movies, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
-
         viewModel.setMoviesDB(MoviesDatabase.getInstance(getContext()));
-        List<MovieModel> list = viewModel.getMoviesDB().movieDao().getMoviesList();
 
-        viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
+        viewModel.getMoviesDB().movieDao().getMoviesList().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
+                movieRecyclerView = new MovieRecyclerView(movieModels, MyMoviesFragment.this);
                 GridLayoutManager layoutManager
                         = new GridLayoutManager(requireContext(), 2);
-                movieRecyclerView = new MovieRecyclerView(movieModels, MyMoviesFragment.this);
-                recyclerView.setAdapter(movieRecyclerView);
                 recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(movieRecyclerView);
             }
         });
+
         return view;
     }
 
@@ -80,5 +81,16 @@ public class MyMoviesFragment extends Fragment implements OnMovieListener {
         } else {
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onLikeClick(int position) {
+        MovieModel model = movieRecyclerView.getSelectedMovie(position);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                viewModel.getMoviesDB().movieDao().deleteMovie(model);
+            }
+        });
     }
 }

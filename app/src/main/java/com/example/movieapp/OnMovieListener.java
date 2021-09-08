@@ -4,4 +4,5 @@ import android.widget.ImageView;
 
 public interface OnMovieListener {
     void onMovieClick(int position, ImageView img);
+    void onLikeClick(int position);
 }

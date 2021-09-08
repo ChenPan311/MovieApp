@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.movieapp.Database.MoviesDatabase;
 import com.example.movieapp.MainViewModel;
 import com.example.movieapp.Models.GenreModel;
 import com.example.movieapp.Models.MovieModel;
@@ -25,6 +26,7 @@ import com.example.movieapp.MovieActivity;
 import com.example.movieapp.MovieRecyclerView;
 import com.example.movieapp.OnMovieListener;
 import com.example.movieapp.R;
+import com.example.movieapp.Utils.AppExecutors;
 
 import java.util.List;
 
@@ -63,6 +65,7 @@ public class PageFragment extends Fragment implements OnMovieListener {
             mGenre = (GenreModel) getArguments().getSerializable("genre");
         }
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        viewModel.setMoviesDB(MoviesDatabase.getInstance(getContext()));
         viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
@@ -106,5 +109,16 @@ public class PageFragment extends Fragment implements OnMovieListener {
         } else {
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onLikeClick(int position) {
+        MovieModel model = movieRecyclerView.getSelectedMovie(position);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                viewModel.getMoviesDB().movieDao().addMovie(model);
+            }
+        });
     }
 }

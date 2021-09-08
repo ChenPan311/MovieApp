@@ -19,6 +19,7 @@ public class MovieModel implements Parcelable {
     private int id;
     private String overview;
     private String vote_average;
+    private boolean isLiked = false;
 
     public MovieModel(String title, String poster_path, String backdrop_path, String release_date, int id, String overview, String vote_average) {
         this.title = title;
@@ -108,6 +109,14 @@ public class MovieModel implements Parcelable {
 
     public void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
     @Override

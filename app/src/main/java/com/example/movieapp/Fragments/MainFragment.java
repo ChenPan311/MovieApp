@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.movieapp.Database.MoviesDatabase;
 import com.example.movieapp.MainViewModel;
 import com.example.movieapp.Models.MovieModel;
 import com.example.movieapp.MovieActivity;
@@ -32,6 +33,7 @@ import com.example.movieapp.MovieListActivity;
 import com.example.movieapp.MovieRecyclerView;
 import com.example.movieapp.OnMovieListener;
 import com.example.movieapp.R;
+import com.example.movieapp.Utils.AppExecutors;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
@@ -66,7 +68,6 @@ public class MainFragment extends Fragment implements OnMovieListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-
         recyclerView = view.findViewById(R.id.recyclerView);
         resultsTv = view.findViewById(R.id.results_tv);
         nowPlayingTv = view.findViewById(R.id.now_playing_tv);
@@ -77,6 +78,7 @@ public class MainFragment extends Fragment implements OnMovieListener {
         snapHelper.attachToRecyclerView(recyclerView);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.setMoviesDB(MoviesDatabase.getInstance(getContext()));
         mainViewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
@@ -113,6 +115,17 @@ public class MainFragment extends Fragment implements OnMovieListener {
         } else {
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onLikeClick(int position) {
+        MovieModel model = mainViewModel.getMovies().getValue().get(position);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mainViewModel.getMoviesDB().movieDao().addMovie(model);
+            }
+        });
     }
 
     @Override
