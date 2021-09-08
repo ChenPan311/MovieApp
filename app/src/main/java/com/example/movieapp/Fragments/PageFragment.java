@@ -69,6 +69,15 @@ public class PageFragment extends Fragment implements OnMovieListener {
         viewModel.getMovies().observe(getViewLifecycleOwner(), new Observer<List<MovieModel>>() {
             @Override
             public void onChanged(List<MovieModel> movieModels) {
+                AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(MovieModel movie : movieModels){
+                            if(viewModel.getMoviesDB().movieDao().checkIfMovieIn(movie.getId()))
+                                movie.setLiked(true);
+                        }
+                    }
+                });
                 if(page == 1) {
                     GridLayoutManager layoutManager
                             = new GridLayoutManager(requireContext(), 2);
@@ -117,8 +126,16 @@ public class PageFragment extends Fragment implements OnMovieListener {
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                viewModel.getMoviesDB().movieDao().addMovie(model);
+                if (model.isLiked()) {
+                    model.setLiked(!model.isLiked());
+                    viewModel.getMoviesDB().movieDao().deleteMovie(model);
+                }
+                else {
+                    model.setLiked(!model.isLiked());
+                    viewModel.getMoviesDB().movieDao().addMovie(model);
+                }
             }
         });
+        movieRecyclerView.notifyItemChanged(position);
     }
 }

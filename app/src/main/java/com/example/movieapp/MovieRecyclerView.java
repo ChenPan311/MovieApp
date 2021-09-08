@@ -45,6 +45,11 @@ public class MovieRecyclerView extends RecyclerView.Adapter<MovieViewHolder> {
         holder.title.setText(movie.getTitle());
         holder.duration.setText(movie.getRelease_date());
         holder.rating.setText(movie.getVote_average());
+        if(movie.isLiked()){
+            holder.like.setImageResource(R.drawable.ic_full_heart);
+        }else{
+            holder.like.setImageResource(R.drawable.ic_heart_svgrepo_com);
+        }
         Glide.with(holder.itemView.getContext())
                 .load("https://image.tmdb.org/t/p/w500/"+movie.getPoster_path())
                 .transform(new CenterCrop(),new RoundedCorners(15))

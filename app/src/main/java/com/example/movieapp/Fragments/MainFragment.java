@@ -87,6 +87,15 @@ public class MainFragment extends Fragment implements OnMovieListener {
                 } else {
                     resultsTv.setVisibility(View.GONE);
                 }
+                AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        for(MovieModel movie : movieModels){
+                            if(mainViewModel.getMoviesDB().movieDao().checkIfMovieIn(movie.getId()))
+                                movie.setLiked(true);
+                        }
+                    }
+                });
                 LinearLayoutManager layoutManager
                         = new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.HORIZONTAL,
@@ -119,13 +128,22 @@ public class MainFragment extends Fragment implements OnMovieListener {
 
     @Override
     public void onLikeClick(int position) {
+        //TODO: check if movie already added
         MovieModel model = mainViewModel.getMovies().getValue().get(position);
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mainViewModel.getMoviesDB().movieDao().addMovie(model);
+                if (model.isLiked()) {
+                    model.setLiked(!model.isLiked());
+                    mainViewModel.getMoviesDB().movieDao().deleteMovie(model);
+                }
+                else {
+                    model.setLiked(!model.isLiked());
+                    mainViewModel.getMoviesDB().movieDao().addMovie(model);
+                }
             }
         });
+        movieRecyclerView.notifyItemChanged(position);
     }
 
     @Override

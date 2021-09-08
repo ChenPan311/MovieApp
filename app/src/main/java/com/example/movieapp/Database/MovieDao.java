@@ -15,6 +15,8 @@ import java.util.List;
 public interface MovieDao {
     @Query("Select * from movies")
     LiveData<List<MovieModel>> getMoviesList();
+    @Query("Select isLiked from movies Where id Like :id")
+    boolean checkIfMovieIn(int id);
     @Insert
     void addMovie(MovieModel movie);
     @Update

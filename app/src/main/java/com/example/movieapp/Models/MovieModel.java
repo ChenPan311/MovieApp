@@ -40,6 +40,7 @@ public class MovieModel implements Parcelable {
         id = in.readInt();
         overview = in.readString();
         vote_average = in.readString();
+        isLiked = in.readByte() != 0;
     }
 
     @Ignore
@@ -133,5 +134,6 @@ public class MovieModel implements Parcelable {
         parcel.writeInt(id);
         parcel.writeString(overview);
         parcel.writeString(vote_average);
+        parcel.writeByte((byte) (isLiked ? 1 : 0));
     }
 }
